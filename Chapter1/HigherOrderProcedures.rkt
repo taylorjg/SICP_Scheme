@@ -84,17 +84,26 @@
       (* (term a)
          (product-recursion term (next a) next b))))
 
-(define (product-integers p a b)
-  (p identity a inc b))
+(define (product-iteration term a next b)
+  (define (iter a result)
+    (if (> a b)
+        result
+        (iter (next a) (* result (term a)))))
+  (iter a 1))
+
+(define (product-integers prod a b)
+  (prod identity a inc b))
 
 (product-integers product-recursion 1 5)
+(product-integers product-iteration 1 5)
 
-(define (factorial n)
-  (product-integers product-recursion 1 n))
+(define (factorial prod n)
+  (product-integers prod 1 n))
 
-(factorial 5)
+(factorial product-recursion 5)
+(factorial product-iteration 5)
 
-(define (compute-pi n)
+(define (compute-pi prod n)
   (define (round-down n)
     (if (odd? n)
         (- n 1)
@@ -103,9 +112,11 @@
     (define numer (+ (round-down n) 2))
     (define denom (+ (round-down (+ n 1)) 1))
     (/ numer denom))
-  (* 4
-     (product-recursion term 1.0 inc n)))
+  (* 4 (prod term 1.0 inc n)))
 
-(compute-pi 10)
-(compute-pi 100)
-(compute-pi 1000)
+(compute-pi product-recursion 10)
+(compute-pi product-recursion 100)
+(compute-pi product-recursion 1000)
+(compute-pi product-iteration 10)
+(compute-pi product-iteration 100)
+(compute-pi product-iteration 1000)
