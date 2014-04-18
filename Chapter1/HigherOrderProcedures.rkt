@@ -76,3 +76,36 @@
 
 ;; ********************************************************************************
 
+;; Exercise 1.31
+
+(define (product-recursion term a next b)
+  (if (> a b)
+      1
+      (* (term a)
+         (product-recursion term (next a) next b))))
+
+(define (product-integers p a b)
+  (p identity a inc b))
+
+(product-integers product-recursion 1 5)
+
+(define (factorial n)
+  (product-integers product-recursion 1 n))
+
+(factorial 5)
+
+(define (compute-pi n)
+  (define (round-down n)
+    (if (odd? n)
+        (- n 1)
+        n))
+  (define (term n)
+    (define numer (+ (round-down n) 2))
+    (define denom (+ (round-down (+ n 1)) 1))
+    (/ numer denom))
+  (* 4
+     (product-recursion term 1.0 inc n)))
+
+(compute-pi 10)
+(compute-pi 100)
+(compute-pi 1000)
