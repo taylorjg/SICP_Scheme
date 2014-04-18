@@ -120,3 +120,36 @@
 (compute-pi product-iteration 10)
 (compute-pi product-iteration 100)
 (compute-pi product-iteration 1000)
+
+;; ********************************************************************************
+
+;; Exercise 1.32
+
+(define (accumulate-recursion combiner null-value term a next b)
+  (if (> a b)
+      null-value
+      (combiner (term a) (accumulate-recursion combiner null-value term (next a) next b))))
+  
+(define (accumulate-iteration combiner null-value term a next b)
+  (define (iter a result)
+    (if (> a b)
+      result
+      (iter (next a) (combiner result (term a)))))
+  (iter a null-value))
+  
+(accumulate-recursion + 0 cube 1 inc 10)
+(accumulate-recursion + 0 identity 1 inc 10)
+(accumulate-iteration + 0 cube 1 inc 10)
+(accumulate-iteration + 0 identity 1 inc 10)
+
+(define (sum-integers-acc acc a b)
+  (acc + 0 identity a inc b))
+
+(define (product-integers-acc acc a b)
+  (acc * 1 identity a inc b))
+
+(sum-integers-acc accumulate-recursion 1 10)
+(sum-integers-acc accumulate-iteration 1 10)
+
+(product-integers-acc accumulate-recursion 1 5)
+(product-integers-acc accumulate-iteration 1 5)
