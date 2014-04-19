@@ -1,9 +1,16 @@
 (define (make-rat n d)
-  (let ((g (gcd n d)))
-    (cons (/ n g) (/ d g))))
+  (let ((g (gcd n d))
+        (n-dash (cond ((and (>= n 0) (>= d 0)) n)
+                      ((and (< n 0) (< d 0)) (* n -1))
+                      ((and (< n 0) (>= d 0)) n)
+                      ((and (>= n 0) (< d 0)) (* n -1))))
+        (d-dash (cond ((and (>= n 0) (>= d 0)) d)
+                      ((and (< n 0) (< d 0)) (* d -1))
+                      ((and (< n 0) (>= d 0)) d)
+                      ((and (>= n 0) (< d 0)) (* d -1)))))
+    (cons (/ n-dash g) (/ d-dash g))))
 
 (define (numer x) (car x))
-
 (define (denom x) (cdr x))
 
 (define (print-rat x)
@@ -35,3 +42,10 @@
      (* (numer y) (denom x))))
 
 (define one-half (make-rat 1 2))
+(define minus-one-half-a (make-rat -1 2))
+(define minus-one-half-b (make-rat 1 -2))
+(define minus-one-half-c (make-rat -1 -2))
+(print-rat one-half)
+(print-rat minus-one-half-a)
+(print-rat minus-one-half-b)
+(print-rat minus-one-half-c)
