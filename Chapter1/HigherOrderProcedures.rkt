@@ -153,3 +153,33 @@
 
 (product-integers-acc accumulate-recursion 1 5)
 (product-integers-acc accumulate-iteration 1 5)
+
+;; ********************************************************************************
+
+;; Exercise 1.33
+
+(define (filtered-accumulate combiner null-value predicate term a next b)
+  (if (> a b)
+      null-value
+      (combiner
+       (if (predicate a) (term a) null-value)
+       (filtered-accumulate combiner null-value predicate term (next a) next b))
+      ))
+
+(define (smallest-divisor n)
+  (find-divisor n 2))
+
+(define (find-divisor n test-divisor)
+  (cond ((> (square test-divisor) n) n)
+        ((divides? test-divisor n) test-divisor)
+        (else (find-divisor n (+ test-divisor 1)))))
+
+(define (divides? a b)
+  (= (remainder b a) 0))
+
+(define (square x) (* x x))
+
+(define (prime? n)
+  (= n (smallest-divisor n)))
+
+(filtered-accumulate + 0 prime? square 1 inc 10)
