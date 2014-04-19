@@ -183,3 +183,9 @@
   (= n (smallest-divisor n)))
 
 (filtered-accumulate + 0 prime? square 1 inc 10)
+
+(define (exercise-1-33-b n)
+  (define (relatively-prime? x) (= (gcd x n) 1))
+  (filtered-accumulate * 1 relatively-prime? identity 1 inc (- n 1)))
+
+(exercise-1-33-b 10)
