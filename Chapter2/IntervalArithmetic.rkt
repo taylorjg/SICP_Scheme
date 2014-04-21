@@ -31,8 +31,34 @@
 ;; Exercise 2.8
 
 (define (sub-interval x y)
-  (make-interval (abs (- (lower-bound x) (lower-bound y)))
-                 (abs (- (upper-bound x) (upper-bound y)))))
+  (make-interval (- (lower-bound x) (upper-bound y))
+                 (- (upper-bound x) (lower-bound y))))
+
+;; ********************************************************************************
+
+;; Exercise 2.9
+
+(define (interval-width x)
+  (- (upper-bound x) (lower-bound x)))
+
+(define (print-interval x)
+  (newline)
+  (display "[")
+  (display (lower-bound x))
+  (display "-")
+  (display (upper-bound x))
+  (display "]")
+  (display " w: ")
+  (display (interval-width x)))
+
+(define i1 (make-interval 10 12))
+(define i2 (make-interval 2 6))
+(print-interval i1)
+(print-interval i2)
+(print-interval (add-interval i1 i2))
+(print-interval (sub-interval i1 i2))
+(print-interval (mul-interval i1 i2))
+(print-interval (div-interval i1 i2))
 
 ;; ********************************************************************************
 
