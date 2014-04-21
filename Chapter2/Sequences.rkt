@@ -14,3 +14,17 @@
 (last-pair nil)
 
 ;; ********************************************************************************
+
+;; Exercise 2.18
+
+(define (reverse-items items)
+  (define (iter a b)
+    (if (null? a)
+        b
+        (iter (cdr a) (cons (car a) b))))
+  (iter items nil))
+
+(reverse-items (list 1 4 9 16 25))
+(reverse-items nil)
+
+;; ********************************************************************************
