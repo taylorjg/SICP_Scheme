@@ -32,18 +32,22 @@
 ;; Exercise 2.20
 
 (define (same-parity first . rest)
-  (define (iter a b)
+  (define (iter a b test?)
     (if (null? a)
         b
         (let ((next (car a)))
           (iter
            (cdr a)
-           (if (or 
-                (and (even? first) (even? next))
-                (and (odd? first) (odd? next)))
+           (if (test? next)
                (cons next b)
-               b)))))
-  (reverse-items (iter rest (list first))))
+               b)
+           test?))))
+  (reverse-items (iter
+                  rest
+                  (list first)
+                  (if (even? first)
+                      even?
+                      odd?))))
 
 (same-parity 1 2 3 4 5 6 7)
 (same-parity 2 3 4 5 6 7)
