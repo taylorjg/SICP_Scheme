@@ -32,15 +32,15 @@
 ;; Exercise 2.20
 
 (define (same-parity first . rest)
-  (define (iter a b test?)
-    (if (null? a)
-        b
-        (let ((next (car a)))
+  (define (iter items result test?)
+    (if (null? items)
+        result
+        (let ((next (car items)))
           (iter
-           (cdr a)
+           (cdr items)
            (if (test? next)
-               (cons next b)
-               b)
+               (cons next result)
+               result)
            test?))))
   (reverse-items (iter
                   rest
