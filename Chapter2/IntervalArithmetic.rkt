@@ -39,7 +39,7 @@
 ;; Exercise 2.9
 
 (define (interval-width x)
-  (- (upper-bound x) (lower-bound x)))
+  (/ (- (upper-bound x) (lower-bound x)) 2))
 
 (define (print-interval x)
   (newline)
@@ -62,3 +62,26 @@
 
 ;; ********************************************************************************
 
+; Exercise 2.12
+
+(define (make-interval-centre-width c w)
+  (make-interval (- c w) (+ c w)))
+
+(define (interval-centre x)
+  (/ (+ (lower-bound x) (upper-bound x)) 2))
+
+(define (make-interval-centre-percent c p)
+  (let ((w (* (/ c 100) p)))
+    (make-interval-centre-width c w)))
+
+(define (interval-percent x)
+  (let ((c (interval-centre x))
+        (w (interval-width x)))
+    (/ (* w 100) c)))
+
+(define i3 (make-interval-centre-percent 20 10))
+(print-interval i3)
+(newline)
+(interval-centre i3)
+(interval-width i3)
+(interval-percent i3)
