@@ -170,9 +170,11 @@
   (define (iter a result)
     (if (null? a)
         result
-        (if (pair? (car a))
-            (iter (cdr a) (append result (fringe (car a))))
-            (iter (cdr a) (reverse (cons (car a) result))))))
+        (let ((hd (car a))
+              (tl (cdr a)))
+          (iter tl (append result (if (pair? hd)
+                                      (fringe hd)
+                                      (list hd)))))))
   (iter items nil))
 
 (newline)
