@@ -77,3 +77,18 @@
 
 ;; ********************************************************************************
 
+;; Exercise 2.23
+
+(define (for-each-jt f items)
+  (if (not (null? items))
+      (let (
+            ; no name-expression pairs - we are just using 'let' for its body
+            )
+        (f (car items))
+        (for-each-jt f (cdr items))
+        )))
+
+(for-each-jt (lambda (x) (newline)(display x)) (list 57 321 88))
+
+;; ********************************************************************************
+
