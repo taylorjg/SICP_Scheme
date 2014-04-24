@@ -164,3 +164,21 @@
 
 ;; ********************************************************************************
 
+;; Exercise 2.28
+
+(define (fringe items)
+  (define (iter a result)
+    (if (null? a)
+        result
+        (if (pair? (car a))
+            (iter (cdr a) (append result (fringe (car a))))
+            (iter (cdr a) (reverse (cons (car a) result))))))
+  (iter items nil))
+
+(newline)
+(fringe deep-list)
+(newline)
+(fringe (list deep-list deep-list))
+
+;; ********************************************************************************
+
