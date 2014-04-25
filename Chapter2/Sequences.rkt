@@ -81,10 +81,12 @@
 
 (define (for-each-jt f items)
   (if (not (null? items))
-      (let ((result #t))
+      (let (
+            ; no name-expression pairs - we are just using 'let' for its body
+            )
         (f (car items))
         (for-each-jt f (cdr items))
-        result)))
+        )))
 
 (for-each-jt (lambda (x) (newline)(display x)) (list 57 321 88))
 
@@ -179,6 +181,26 @@
 (fringe deep-list)
 (newline)
 (fringe (list deep-list deep-list))
+
+;; ********************************************************************************
+
+;; Exercise 2.30
+
+(define (square-tree-1 tree)
+  (cond ((null? tree) nil)
+        ((not (pair? tree)) (square tree))
+        (else (cons (square-tree-1 (car tree))
+                    (square-tree-1 (cdr tree))))))
+
+(define (square-tree-2 tree)
+  (map-jt (lambda (sub-tree)
+            (if (pair? sub-tree)
+                (square-tree-2 sub-tree)
+                (square sub-tree)))
+          tree))
+
+(square-tree-1 (list 1 (list 2 (list 3 4) 5) (list 6 7)))
+(square-tree-2 (list 1 (list 2 (list 3 4) 5) (list 6 7)))
 
 ;; ********************************************************************************
 
