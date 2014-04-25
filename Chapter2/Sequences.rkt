@@ -81,12 +81,10 @@
 
 (define (for-each-jt f items)
   (if (not (null? items))
-      (let (
-            ; no name-expression pairs - we are just using 'let' for its body
-            )
+      (let ((result #t))
         (f (car items))
         (for-each-jt f (cdr items))
-        )))
+        result)))
 
 (for-each-jt (lambda (x) (newline)(display x)) (list 57 321 88))
 
