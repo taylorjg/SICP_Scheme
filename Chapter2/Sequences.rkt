@@ -204,3 +204,21 @@
 
 ;; ********************************************************************************
 
+;; Exercise 2.31
+
+(define (tree-map f tree)
+  (map-jt (lambda (sub-tree)
+            (if (pair? sub-tree)
+                (tree-map f sub-tree)
+                (f sub-tree)))
+          tree))
+
+(define (square-tree-3 tree) (tree-map square  tree))
+
+(square-tree-3 (list 1 (list 2 (list 3 4) 5) (list 6 7)))
+
+;; ********************************************************************************
+
+;; Exercise 2.32
+
+;; ********************************************************************************
