@@ -10,6 +10,8 @@
         (iter (cdr a) (cons (car a) nil))))
   (iter items nil))
 
+(display "exercise 2.17")
+(newline)
 (last-pair (list 23 72 149 34))
 (last-pair nil)
 
@@ -24,6 +26,8 @@
         (iter (cdr a) (cons (car a) b))))
   (iter items nil))
 
+(display "exercise 2.18")
+(newline)
 (reverse-items (list 1 4 9 16 25))
 (reverse-items nil)
 
@@ -81,10 +85,12 @@
 
 (define (for-each-jt f items)
   (if (not (null? items))
-      (let ((result #t))
+      (let (
+            ; no name-expression pairs - we are just using 'let' for its body
+            )
         (f (car items))
         (for-each-jt f (cdr items))
-        result)))
+        )))
 
 (for-each-jt (lambda (x) (newline)(display x)) (list 57 321 88))
 
@@ -179,6 +185,55 @@
 (fringe deep-list)
 (newline)
 (fringe (list deep-list deep-list))
+
+;; ********************************************************************************
+
+;; Exercise 2.30
+
+(define (square-tree-1 tree)
+  (cond ((null? tree) nil)
+        ((not (pair? tree)) (square tree))
+        (else (cons (square-tree-1 (car tree))
+                    (square-tree-1 (cdr tree))))))
+
+(define (square-tree-2 tree)
+  (map-jt (lambda (sub-tree)
+            (if (pair? sub-tree)
+                (square-tree-2 sub-tree)
+                (square sub-tree)))
+          tree))
+
+(square-tree-1 (list 1 (list 2 (list 3 4) 5) (list 6 7)))
+(square-tree-2 (list 1 (list 2 (list 3 4) 5) (list 6 7)))
+
+;; ********************************************************************************
+
+;; Exercise 2.31
+
+(define (tree-map f tree)
+  (map-jt (lambda (sub-tree)
+            (if (pair? sub-tree)
+                (tree-map f sub-tree)
+                (f sub-tree)))
+          tree))
+
+(define (square-tree-3 tree) (tree-map square  tree))
+
+(square-tree-3 (list 1 (list 2 (list 3 4) 5) (list 6 7)))
+
+;; ********************************************************************************
+
+;; Exercise 2.32
+
+(define (subsets s)
+  (if (null? s)
+      (list nil)
+      (let ((rest (subsets (cdr s))))
+        (append rest (map-jt
+                      (lambda (x) (cons (car s) x))
+                      rest)))))
+
+(subsets (list 1 2 3))
 
 ;; ********************************************************************************
 
