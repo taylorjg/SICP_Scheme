@@ -182,3 +182,31 @@
 
 ;; ********************************************************************************
 
+;; Exercise 2.33
+
+(define (accumulate op initial sequence)
+  (if (null? sequence)
+      initial
+      (op (car sequence)
+          (accumulate op initial (cdr sequence)))))
+
+(accumulate + 0 (list 1 2 3 4 5))
+(accumulate * 1 (list 1 2 3 4 5))
+(accumulate cons nil (list 1 2 3 4 5))
+
+(define (map-jt-2 p sequence)
+  (accumulate (lambda (x y) (cons (p x) y)) nil sequence))
+
+(map-jt-2 square (list 2 4 6))
+
+(define (append-jt seq1 seq2)
+  (accumulate cons seq2 seq1))
+
+(append-jt (list 1 2 3) (list 4 5 6))
+
+(define (length-jt sequence)
+  (accumulate (lambda (_ y) (+ y 1)) 0 sequence))
+
+(length-jt (list 1 2 3 4 5 6 7 8 9 10))
+
+;; ********************************************************************************
