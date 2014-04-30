@@ -317,7 +317,7 @@
 
 ;; Exercise 2.35
 
-(display "exercise 2.34")
+(display "exercise 2.35")
 (newline)
 
 (define (count-leaves-1 x)
@@ -330,16 +330,17 @@
 (newline)
 (count-leaves-1 deep-list)
 
-(define (count-leaves-2 x)
-  (accumulate (lambda (x y)
-                (newline)
-                (display "x: ")
-                (display x)
-                (newline)
-                (display "y: ")
-                (display y)
-                x) 0 (map ? ?)))
+(define (enumerate-tree tree)
+  (cond ((null? tree) nil)
+        ((not (pair? tree)) (list tree))
+        (else (append (enumerate-tree (car tree))
+                      (enumerate-tree (cdr tree))))))
+
+(define (count-leaves-2 tree)
+  (accumulate + 0 (map (lambda (_) 1) (enumerate-tree tree))))
 
 (display deep-list)
 (newline)
 (count-leaves-2 deep-list)
+
+;; ********************************************************************************
