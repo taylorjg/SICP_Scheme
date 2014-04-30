@@ -3,6 +3,9 @@
 
 ;; Exercise 2.17
 
+(display "exercise 2.17")
+(newline)
+
 (define (last-pair items)
   (define (iter a b)
     (if (null? a)
@@ -10,14 +13,15 @@
         (iter (cdr a) (cons (car a) nil))))
   (iter items nil))
 
-(display "exercise 2.17")
-(newline)
 (last-pair (list 23 72 149 34))
 (last-pair nil)
 
 ;; ********************************************************************************
 
 ;; Exercise 2.18
+
+(display "exercise 2.18")
+(newline)
 
 (define (reverse-items items)
   (define (iter a b)
@@ -26,14 +30,15 @@
         (iter (cdr a) (cons (car a) b))))
   (iter items nil))
 
-(display "exercise 2.18")
-(newline)
 (reverse-items (list 1 4 9 16 25))
 (reverse-items nil)
 
 ;; ********************************************************************************
 
 ;; Exercise 2.20
+
+(display "exercise 2.20")
+(newline)
 
 (define (same-parity first . rest)
   (define (iter items result test?)
@@ -60,6 +65,9 @@
 
 ;; Exercise 2.21
 
+(display "exercise 2.21")
+(newline)
+
 (define (square x) (* x x))
 
 (define (square-list-1 items)
@@ -82,6 +90,9 @@
 ;; ********************************************************************************
 
 ;; Exercise 2.23
+
+(display "exercise 2.23")
+(newline)
 
 (define (for-each-jt f items)
   (if (not (null? items))
@@ -114,6 +125,9 @@
 
 ;; Exercise 2.25
 
+(display "exercise 2.25")
+(newline)
+
 (define list-1 (list 1 3 (list 5 7) 9))
 (define x1 (car (cdr (car (cdr (cdr list-1))))))
 
@@ -126,6 +140,9 @@
 ;; ********************************************************************************
 
 ;; Exercise 2.26
+
+(display "exercise 2.26")
+(newline)
 
 (define x (list 1 2 3))
 (define y (list 4 5 6))
@@ -145,6 +162,9 @@
 ;; ********************************************************************************
 
 ;; Exercise 2.27
+
+(display "exercise 2.27")
+(newline)
 
 (define (deep-reverse items)
   (define (iter a b)
@@ -170,6 +190,9 @@
 
 ;; Exercise 2.28
 
+(display "exercise 2.28")
+(newline)
+
 (define (fringe items)
   (define (iter a result)
     (if (null? a)
@@ -189,6 +212,9 @@
 ;; ********************************************************************************
 
 ;; Exercise 2.30
+
+(display "exercise 2.30")
+(newline)
 
 (define (square-tree-1 tree)
   (cond ((null? tree) nil)
@@ -210,6 +236,9 @@
 
 ;; Exercise 2.31
 
+(display "exercise 2.31")
+(newline)
+
 (define (tree-map f tree)
   (map-jt (lambda (sub-tree)
             (if (pair? sub-tree)
@@ -225,6 +254,9 @@
 
 ;; Exercise 2.32
 
+(display "exercise 2.32")
+(newline)
+
 (define (subsets s)
   (if (null? s)
       (list nil)
@@ -238,6 +270,9 @@
 ;; ********************************************************************************
 
 ;; Exercise 2.33
+
+(display "exercise 2.33")
+(newline)
 
 (define (accumulate op initial sequence)
   (if (null? sequence)
@@ -263,5 +298,19 @@
   (accumulate (lambda (_ y) (+ y 1)) 0 sequence))
 
 (length-jt (list 1 2 3 4 5 6 7 8 9 10))
+
+;; ********************************************************************************
+
+;; Exercise 2.34
+
+(display "exercise 2.34")
+(newline)
+
+(define (horner-eval x coefficient-sequence)
+  (accumulate (lambda (this-coeff higher-terms) (+ (* x higher-terms) this-coeff))
+              0
+              coefficient-sequence))
+
+(horner-eval 2 (list 1 3 0 5 0 1))
 
 ;; ********************************************************************************
