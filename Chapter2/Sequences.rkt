@@ -314,3 +314,32 @@
 (horner-eval 2 (list 1 3 0 5 0 1))
 
 ;; ********************************************************************************
+
+;; Exercise 2.35
+
+(display "exercise 2.34")
+(newline)
+
+(define (count-leaves-1 x)
+  (cond ((null? x) 0)
+        ((not (pair? x)) 1)
+        (else (+ (count-leaves-1 (car x))
+                 (count-leaves-1 (cdr x))))))
+
+(display deep-list)
+(newline)
+(count-leaves-1 deep-list)
+
+(define (count-leaves-2 x)
+  (accumulate (lambda (x y)
+                (newline)
+                (display "x: ")
+                (display x)
+                (newline)
+                (display "y: ")
+                (display y)
+                x) 0 (map ? ?)))
+
+(display deep-list)
+(newline)
+(count-leaves-2 deep-list)
