@@ -353,12 +353,15 @@
 (define (accumulate-n op init seqs)
   (if (null? (car seqs))
              nil
-             (cons (accumulate op init ?)
-                   (accumulate-n op init ?))))
+             (cons (accumulate op init (map car seqs))
+                   (accumulate-n op init (map cdr seqs)))))
 
 (define seqs (list (list 1 2 3) (list 4 5 6) (list 7 8 9) (list 10 11 12)))
+
 (newline)
 (display seqs)
-;(accumulate-n + 0 seqs)
+
+(newline)
+(accumulate-n + 0 seqs)
 
 ;; ********************************************************************************
