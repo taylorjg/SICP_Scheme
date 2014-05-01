@@ -352,9 +352,9 @@
 
 (define (accumulate-n op init seqs)
   (if (null? (car seqs))
-             nil
-             (cons (accumulate op init (map car seqs))
-                   (accumulate-n op init (map cdr seqs)))))
+      nil
+      (cons (accumulate op init (map car seqs))
+            (accumulate-n op init (map cdr seqs)))))
 
 (define seqs (list (list 1 2 3) (list 4 5 6) (list 7 8 9) (list 10 11 12)))
 
@@ -365,3 +365,48 @@
 (accumulate-n + 0 seqs)
 
 ;; ********************************************************************************
+
+;; Exercise 2.37
+
+(display "exercise 2.36")
+(newline)
+
+(define (dot-product v w)
+  (accumulate + 0 (map * v w)))
+
+(define v1 (list 1 2 3))
+(define v2 (list 4 5 6))
+; result: 32
+(dot-product v1 v2)
+
+(define (matrix-*-vector m v)
+  (map (lambda (row) (dot-product row v)) m))
+
+;; http://mathinsight.org/matrix_vector_multiplication_examples
+(define m-1 (list (list 1 2 3) (list 4 5 6) (list 7 8 9) (list 10 11 12)))
+(define v-1 (list -2 1 0))
+; result: (0 -3 -6 -9)
+(matrix-*-vector m-1 v-1)
+
+(define (transpose m)
+  (accumulate-n cons nil m))
+
+(define m-2 (list (list 1 2) (list 3 4) (list 5 6)))
+; result: ((1 3 5) (2 4 6))
+(transpose m-2)
+
+(define (matrix-*-matrix m n)
+  (let ((cols (transpose n)))
+    (map (lambda (m-row)
+           (map (lambda (n-col) (dot-product m-row n-col))
+                cols))
+         m)))
+
+;; http://www.intmath.com/matrices-determinants/matrix-multiplication-examples.php
+(define m-a (list (list -4 2 -3) (list 1 3 4)))
+(define m-b (list (list -1 -2 2 0) (list 5 1 6 3) (list 4 7 8 9)))
+; result: ((2 -11 -20 -21) (30 29 52 45))
+(matrix-*-matrix m-a m-b)
+
+;; ********************************************************************************
+
