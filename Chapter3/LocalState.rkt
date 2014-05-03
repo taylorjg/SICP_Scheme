@@ -36,3 +36,51 @@
 (mf 'how-many-calls?)
 
 ;; --------------------------------------------------------------------------------
+
+;; Exercise 3.3
+
+(define (make-account balance)
+  (define (withdraw amount)
+    (if (>= balance amount)
+        (begin (set! balance (- balance amount)) balance)
+        "Insufficient funds"))
+  (define (deposit amount)
+    (set! balance (+ balance amount)))
+  (define (dispatch m)
+    (cond ((eq? m 'withdraw) withdraw)
+          ((eq? m 'deposit) deposit)
+          (else (error "Unknown request -- MAKE-ACCOUNT" m))))
+  dispatch)
+
+(define (make-account-2 balance password)
+  (define (withdraw amount)
+    (if (>= balance amount)
+        (begin (set! balance (- balance amount)) balance)
+        "Insufficient funds"))
+  (define (deposit amount)
+    (set! balance (+ balance amount)))
+  (define (dispatch password-attempt m)
+    (if (eq? password-attempt password)
+        (cond ((eq? m 'withdraw) withdraw)
+              ((eq? m 'deposit) deposit)
+              (else (error "Unknown request -- MAKE-ACCOUNT" m)))
+        (lambda (_) "Incorrect password")))
+  dispatch)
+
+(define acc (make-account 100))
+((acc 'withdraw) 30)
+((acc 'withdraw) 45)
+((acc 'deposit) 15)
+((acc 'withdraw) 0)
+((acc 'withdraw) 50)
+
+(define acc-2 (make-account-2 100 'p455w0rd))
+((acc-2 'p455w0rd 'withdraw) 30)
+((acc-2 'p455w0rd 'withdraw) 45)
+((acc-2 'p455w0rd 'deposit) 15)
+((acc-2 'p455w0rd 'withdraw) 0)
+((acc-2 'p455w0rd 'withdraw) 50)
+((acc-2 'bogus 'withdraw) 10)
+((acc-2 'bogus 'deposit) 10)
+
+;; --------------------------------------------------------------------------------
