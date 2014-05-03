@@ -84,3 +84,44 @@
 ((acc-2 'bogus 'deposit) 10)
 
 ;; --------------------------------------------------------------------------------
+
+;; Exercise 3.4
+
+(define (call-the-cops)
+  (display "THE COPS ARE ON THE WAY!"))
+
+(define (make-account-3 balance password)
+  (let ((bad-password-count 0))
+    (define (withdraw amount)
+      (if (>= balance amount)
+          (begin (set! balance (- balance amount)) balance)
+          "Insufficient funds"))
+    (define (deposit amount)
+      (set! balance (+ balance amount)))
+    (define (dispatch password-attempt m)
+      (if (eq? password-attempt password)
+          (cond ((eq? m 'withdraw) (begin (set! bad-password-count 0) withdraw))
+                ((eq? m 'deposit) (begin (set! bad-password-count 0) deposit))
+                (else (error "Unknown request -- MAKE-ACCOUNT" m)))
+          (lambda (_) (begin
+                        (set! bad-password-count (+ bad-password-count 1))
+                        (if (>= bad-password-count 7)
+                            (call-the-cops)
+                            "Incorrect password")))))
+    dispatch))
+
+(define acc-3 (make-account-3 100 'p455w0rd))
+((acc-3 'p455w0rd 'withdraw) 30)
+((acc-3 'p455w0rd 'withdraw) 45)
+((acc-3 'p455w0rd 'deposit) 15)
+((acc-3 'p455w0rd 'withdraw) 0)
+((acc-3 'p455w0rd 'withdraw) 50)
+((acc-3 'bogus 'deposit) 10)
+((acc-3 'bogus 'deposit) 10)
+((acc-3 'bogus 'deposit) 10)
+((acc-3 'bogus 'deposit) 10)
+((acc-3 'bogus 'deposit) 10)
+((acc-3 'bogus 'deposit) 10)
+((acc-3 'bogus 'deposit) 10)
+
+;; --------------------------------------------------------------------------------
