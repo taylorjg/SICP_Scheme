@@ -1,3 +1,6 @@
+;; http://stackoverflow.com/questions/9500068/random-function-in-drracket
+(#%require (only racket/base random))
+
 ;; --------------------------------------------------------------------------------
 
 ;; Exercise 3.1
@@ -123,5 +126,74 @@
 ((acc-3 'bogus 'deposit) 10)
 ((acc-3 'bogus 'deposit) 10)
 ((acc-3 'bogus 'deposit) 10)
+(newline)
+
+;; --------------------------------------------------------------------------------
+
+;; Exercise 3.5
+
+(define (rand)
+  (random 1000000000))
+
+;(define (random-in-range low high)
+;  (let ((range (- high low)))
+;    (+ low (random range))))
+
+(define (random-in-range low high)
+  (let ((range (- high low))
+        (random-0-to-1 (random)))
+    (+ low (* random-0-to-1 range))))
+
+(define (estimate-pi trials)
+  (sqrt (/ 6 (monte-carlo trials cesaro-test))))
+
+(define (cesaro-test)
+  (= (gcd (rand) (rand)) 1))
+
+(define (monte-carlo trials experiment)
+  (define (iter trials-remaining trials-passed)
+    (cond ((= trials-remaining 0) (/ trials-passed trials))
+          ((experiment) (iter (- trials-remaining 1)(+ trials-passed 1)))
+          (else (iter (- trials-remaining 1) trials-passed))))
+  (iter trials 0))
+
+(display "estimate-pi")
+(newline)
+(estimate-pi 100)
+(estimate-pi 1000)
+(estimate-pi 10000)
+(estimate-pi 100000)
+(estimate-pi 1000000)
+
+(define (estimate-integral predicate pt1 pt2 trials)
+  (let* ((x1 (car pt1))
+         (y1 (cdr pt1))
+         (x2 (car pt2))
+         (y2 (cdr pt2))
+         (area (* (- x2 x1) (- y2 y1))))
+    (* area (monte-carlo
+             trials
+             (lambda () (predicate pt1 pt2))))))
+
+(define (point-in-region-test pt1 pt2)
+  (let* ((x1 (car pt1))
+         (y1 (cdr pt1))
+         (x2 (car pt2))
+         (y2 (cdr pt2))
+         (rx (/ (- x2 x1) 2))
+         (ry (/ (- y2 y1) 2))
+         (cx (+ x1 rx))
+         (cy (+ y1 ry))
+         (x (random-in-range x1 x2))
+         (y (random-in-range y1 y2)))
+    (<= (+ (* (- x cx) (- x cx)) (* (- y cy) (- y cy))) (* rx rx))))
+
+(display "estimate-integral")
+(newline)
+(estimate-integral point-in-region-test (cons -1.0 -1.0) (cons 1.0 1.0) 100)
+(estimate-integral point-in-region-test (cons -1.0 -1.0) (cons 1.0 1.0) 1000)
+(estimate-integral point-in-region-test (cons -1.0 -1.0) (cons 1.0 1.0) 10000)
+(estimate-integral point-in-region-test (cons -1.0 -1.0) (cons 1.0 1.0) 100000)
+(estimate-integral point-in-region-test (cons -1.0 -1.0) (cons 1.0 1.0) 1000000)
 
 ;; --------------------------------------------------------------------------------
