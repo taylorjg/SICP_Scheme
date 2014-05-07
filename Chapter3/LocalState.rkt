@@ -1,5 +1,6 @@
 ;; http://stackoverflow.com/questions/9500068/random-function-in-drracket
 (#%require (only racket/base random))
+(#%require (only racket/base random-seed))
 
 ;; --------------------------------------------------------------------------------
 
@@ -195,5 +196,32 @@
 (estimate-integral point-in-region-test (cons -1.0 -1.0) (cons 1.0 1.0) 10000)
 (estimate-integral point-in-region-test (cons -1.0 -1.0) (cons 1.0 1.0) 100000)
 (estimate-integral point-in-region-test (cons -1.0 -1.0) (cons 1.0 1.0) 1000000)
+
+;; --------------------------------------------------------------------------------
+
+;; Exercise 3.6
+
+(define (rand-jt m)
+  (cond ((eq? m 'generate) (random 11))
+        ((eq? m 'reset) random-seed)
+        (else (error "Unknown request -- RAND-JT" m))))
+
+(define (dump-some-random-numbers n)
+  (define (iter counter)
+    (if (> counter 0)
+        (begin
+          (newline)
+          (display "resetting random...")
+          ((rand-jt 'reset) 999)
+          (newline)
+          (display (rand-jt 'generate))
+          (newline)
+          (display (rand-jt 'generate))
+          (newline)
+          (display (rand-jt 'generate))
+          (iter (- counter 1)))))
+  (iter n))
+
+(dump-some-random-numbers 3)
 
 ;; --------------------------------------------------------------------------------
