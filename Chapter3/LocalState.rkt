@@ -1,6 +1,7 @@
 ;; http://stackoverflow.com/questions/9500068/random-function-in-drracket
 (#%require (only racket/base random))
 (#%require (only racket/base random-seed))
+(#%require (only racket/base error))
 
 ;; --------------------------------------------------------------------------------
 
@@ -67,7 +68,7 @@
     (if (eq? password-attempt password)
         (cond ((eq? m 'withdraw) withdraw)
               ((eq? m 'deposit) deposit)
-              (else (error "Unknown request -- MAKE-ACCOUNT" m)))
+              (else (error "Unknown request -- MAKE-ACCOUNT-2" m)))
         (lambda (_) "Incorrect password")))
   dispatch)
 
@@ -106,7 +107,7 @@
       (if (eq? password-attempt password)
           (cond ((eq? m 'withdraw) (begin (set! bad-password-count 0) withdraw))
                 ((eq? m 'deposit) (begin (set! bad-password-count 0) deposit))
-                (else (error "Unknown request -- MAKE-ACCOUNT" m)))
+                (else (error "Unknown request -- MAKE-ACCOUNT-3" m)))
           (lambda (_) (begin
                         (set! bad-password-count (+ bad-password-count 1))
                         (if (>= bad-password-count 7)
@@ -223,5 +224,15 @@
   (iter n))
 
 (dump-some-random-numbers 3)
+
+;; --------------------------------------------------------------------------------
+
+;; Exercise 3.7
+
+(define (make-joint acc password-1 password-2)
+  acc)
+
+(define peter-acc (make-account-2 100 'open-sesame))
+(define paul-acc (make-joint peter-acc 'open-sesame 'rosebud))
 
 ;; --------------------------------------------------------------------------------
