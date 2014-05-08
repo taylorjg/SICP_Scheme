@@ -229,10 +229,19 @@
 
 ;; Exercise 3.7
 
-(define (make-joint acc password-1 password-2)
-  acc)
+(define (make-joint acc initial-password new-password)
+  (define (dispatch new-password-attempt m)
+    (if (eq? new-password-attempt new-password)
+        (acc initial-password m)
+        (lambda (_) "Incorrect new password")))
+  dispatch)
 
 (define peter-acc (make-account-2 100 'open-sesame))
 (define paul-acc (make-joint peter-acc 'open-sesame 'rosebud))
+(newline)
+((peter-acc 'open-sesame 'withdraw) 10)
+((peter-acc 'open-sesame 'withdraw) 20)
+((paul-acc 'open-sesame 'withdraw) 5)
+((paul-acc 'rosebud 'withdraw) 5)
 
 ;; --------------------------------------------------------------------------------
