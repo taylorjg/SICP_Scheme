@@ -276,3 +276,20 @@
 ; (last-pair infinite-list) ; would run forever!
 
 ;; --------------------------------------------------------------------------------
+
+;; Exercise 3.14
+
+(define (mystery x)
+  (define (loop x y)
+    (if (null? x)
+        y
+        (let ((temp (cdr x)))
+          (set-cdr! x y)
+          (loop temp x))))
+  (loop x '()))
+
+(define list-in (list 1 2 3 4))
+list-in
+(mystery list-in)
+
+;; --------------------------------------------------------------------------------
