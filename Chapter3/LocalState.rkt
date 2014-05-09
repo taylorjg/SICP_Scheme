@@ -245,3 +245,34 @@
 ((paul-acc 'rosebud 'withdraw) 5)
 
 ;; --------------------------------------------------------------------------------
+
+;; Exercise 3.12
+
+(define (append! x y)
+  (set-cdr! (last-pair x) y)
+  x)
+
+(define (last-pair x)
+  (if (null? (cdr x))
+      x
+      (last-pair (cdr x))))
+
+(define list-x (list 'a 'b))
+(define list-y (list 'c 'd))
+(define list-z (append list-x list-y))
+(cdr list-x) ; (b)
+(define list-w (append! list-x list-y))
+(cdr list-x) ; (b, c, d)
+
+;; --------------------------------------------------------------------------------
+
+;; Exercise 3.13
+
+(define (make-cycle x)
+  (set-cdr! (last-pair x) x)
+  x)
+
+(define infinite-list (make-cycle (list 1 2 3))) ; #0=(1 2 3 . #0#)
+; (last-pair infinite-list) ; would run forever!
+
+;; --------------------------------------------------------------------------------
