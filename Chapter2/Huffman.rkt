@@ -59,6 +59,10 @@
         ((= bit 1) (right-branch branch))
         (else (error "bad bit -- CHOOSE-BRANCH" bit))))
 
+;; --------------------------------------------------------------------------------
+
+;; Exercise 2.67
+
 (define sample-tree
   (make-code-tree (make-leaf 'A 4)
                   (make-code-tree
@@ -90,4 +94,18 @@
               (else (error "bad symbol -- ENCODE-SYMBOL" symbol))))))
 
 (encode '(a d a b b c a) sample-tree)
+
+;; Uncomment the following line to see an example of the an error due to a bad symbol that is not in the tree
 ;; (encode '(a d a b b c a e) sample-tree)
+
+;; --------------------------------------------------------------------------------
+
+;; Exercise 2.69
+
+(define (generate-huffman-tree pairs)
+  (successive-merge (make-leaf-set pairs)))
+
+(define (successive-merge)
+  )
+
+;; --------------------------------------------------------------------------------
