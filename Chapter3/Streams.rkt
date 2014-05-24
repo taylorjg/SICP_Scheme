@@ -37,11 +37,23 @@
         (else (stream-filter pred (stream-cdr s)))))
 
 (define (display-stream s)
-  (stream-for-each display-line s))
+  (begin
+    (stream-for-each display-element s)
+    (newline)))
 
-(define (display-line x)
-  (newline)
-  (display x))
+(define (display-stream-n s n)
+  (define (iter s remaining)
+    (if (> remaining 0)
+        (begin
+          (display-element (stream-car s))
+          (iter (stream-cdr s) (- remaining 1)))))
+  (begin
+    (iter s n)
+    (newline)))
+
+(define (display-element x)
+  (display x)
+  (display " "))
 
 ;; --------------------------------------------------------------------------------
 
@@ -58,6 +70,26 @@
 (define s2 (cons-stream 4 (cons-stream 5 (cons-stream 6 the-empty-stream))))
 (define s3 (cons-stream 7 (cons-stream 8 (cons-stream 9 the-empty-stream))))
 (display-stream (stream-map + s1 s2 s3))
+(display-stream-n (stream-map + s1 s2 s3) 2)
 
 ;; --------------------------------------------------------------------------------
 
+(define (integers-starting-from n) (cons-stream n (integers-starting-from (+ n 1))))
+(define integers (integers-starting-from 1))
+
+(define (divisible? x y) (= (remainder x y) 0))
+(define no-sevens (stream-filter (lambda (x) (not (divisible? x 7))) integers))
+
+(define (fibgen a b) (cons-stream a (fibgen b (+ a b))))
+(define fibs (fibgen 0 1))
+
+(display-stream-n (integers-starting-from 10) 10)
+(display-stream-n integers 10)
+(display-stream-n no-sevens 20)
+(display-stream-n fibs 20)
+
+;; --------------------------------------------------------------------------------
+
+
+
+;; --------------------------------------------------------------------------------
