@@ -105,11 +105,6 @@
 (define (generate-huffman-tree pairs)
   (successive-merge (make-leaf-set pairs)))
 
-;; if nodes is empty or has only one item then return nodes
-;; call make-code-tree passing 1st and 2nd items in nodes
-;; insert resultant tree into nodes in the correct place
-;; make recursive call to successive-merge passing (new) nodes
-
 (define (successive-merge nodes)
   (cond ((null? nodes) nodes)
         ((null? (cdr nodes)) (car nodes))
@@ -128,6 +123,7 @@ my-tree
 (encode '(a d a b b c a) my-tree)
 (decode '(0 1 1 0 0 1 0 1 0 1 1 1 0) my-tree)
 
+(encode '(a b c d) my-tree)
 (decode (encode '(a b c d) my-tree) my-tree)
 
 ;; --------------------------------------------------------------------------------
