@@ -43,13 +43,12 @@
 
 (define (display-stream-n s n)
   (define (iter s remaining)
-    (if (> remaining 0)
+    (if (and (> remaining 0) (not (stream-null? s)))
         (begin
           (display-element (stream-car s))
           (iter (stream-cdr s) (- remaining 1)))))
-  (begin
-    (iter s n)
-    (newline)))
+  (iter s n)
+  (newline))
 
 (define (display-element x)
   (display x)
@@ -74,6 +73,8 @@
 
 ;; --------------------------------------------------------------------------------
 
+;; Infinite Streams
+
 (define (integers-starting-from n) (cons-stream n (integers-starting-from (+ n 1))))
 (define integers (integers-starting-from 1))
 
@@ -90,6 +91,48 @@
 
 ;; --------------------------------------------------------------------------------
 
+;; Sieve of Eratosthenes
 
+(define (sieve stream)
+  (cons-stream
+   (stream-car stream)
+   (sieve (stream-filter
+           (lambda (x)
+             (not (divisible? x (stream-car stream))))
+           (stream-cdr stream)))))
+
+(define primes (sieve (integers-starting-from 2)))
+
+(display-stream-n primes 20)
+
+;; --------------------------------------------------------------------------------
+
+;; Defining streams implicitly
+
+(define ones (cons-stream 1 ones))
+(display-stream-n ones 10)
+
+(define (add-streams s1 s2) (stream-map + s1 s2))
+(define integers2 (cons-stream 1 (add-streams ones integers)))
+(display-stream-n integers2 10)
+
+(define fibs2 (cons-stream 0 (cons-stream 1 (add-streams (stream-cdr fibs) fibs))))
+(display-stream-n fibs2 20)
+
+;; --------------------------------------------------------------------------------
+
+(define (scale-stream stream factor) (stream-map (lambda (x) (* x factor)) stream))
+(define double (cons-stream 1 (scale-stream double 2)))
+(display-stream-n double 10)
+
+(define primes2 (cons-stream 2 (stream-filter prime2? (integers-starting-from 3))))
+(define (prime2? n)
+  (define (square x) (* x x))
+  (define (iter ps)
+    (cond ((> (square (stream-car ps)) n) #t)
+          ((divisible? n (stream-car ps)) #f)
+          (else (iter (stream-cdr ps)))))
+  (iter primes2))
+(display-stream-n primes2 20)
 
 ;; --------------------------------------------------------------------------------
