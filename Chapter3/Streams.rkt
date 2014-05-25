@@ -128,8 +128,8 @@
 (display-stream-n ones 10)
 
 (define (add-streams s1 s2) (stream-map + s1 s2))
-;(define integers2 (cons-stream 1 (add-streams ones integers2)))
-(define integers2 (cons-stream 1 (show-named-stream "add" (add-streams (show-named-stream "ones" ones) (show-named-stream "integers2" integers2)))))
+(define integers2 (cons-stream 1 (add-streams ones integers2)))
+;(define integers2 (cons-stream 1 (show-named-stream "add" (add-streams (show-named-stream "ones" ones) (show-named-stream "integers2" integers2)))))
 (display-stream-n integers2 10)
 
 (define fibs2 (cons-stream 0 (cons-stream 1 (add-streams (stream-cdr fibs) fibs))))
@@ -153,6 +153,10 @@
 
 ;; --------------------------------------------------------------------------------
 
-;; Exercise 3.5x
+;; Exercise 3.54
 
+(define (mul-streams s1 s2) (stream-map * s1 s2))
+(define factorials (cons-stream 1 (mul-streams integers2 factorials)))
+(display-stream-n factorials 10)
+         
 ;; --------------------------------------------------------------------------------
