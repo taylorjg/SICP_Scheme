@@ -158,7 +158,7 @@
 (define (mul-streams s1 s2) (stream-map * s1 s2))
 (define factorials (cons-stream 1 (mul-streams integers2 factorials)))
 (display-stream-n factorials 10)
-         
+
 ;; --------------------------------------------------------------------------------
 
 ;; Exercise 3.55
@@ -178,10 +178,29 @@
 (define (integrate-series coefficients) (stream-map / coefficients integers2))
 (display-stream-n (integrate-series ones) 10)
 
-;; Exercise 3.59b cosine-series
+;; Exercise 3.59b
 
-;;(define exp-series (cons-stream 1 (integrate-series exp-series)))
+(define exp-series (cons-stream 1 (integrate-series exp-series)))
+(display-stream-n exp-series 10)
 
-;; Exercise 3.59b sine-series
+(define cosine-series
+  (cons-stream 1 (integrate-series (stream-map
+                                    (lambda (c n)
+                                      (cond ((= (remainder n 2) 1) 0)
+                                            ((= (remainder n 4) 0) c)
+                                            (else (- c))))
+                                    exp-series
+                                    integers2))))
+(display-stream-n cosine-series 10)
+
+(define sine-series
+  (cons-stream 0 (integrate-series (stream-map
+                                    (lambda (c n)
+                                      (cond ((= (remainder n 2) 0) 0)
+                                            ((= (remainder (+ n 1) 4) 0) (- c))
+                                            (else c)))
+                                    exp-series
+                                    integers2))))
+(display-stream-n sine-series 10)
 
 ;; --------------------------------------------------------------------------------
