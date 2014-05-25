@@ -203,4 +203,10 @@
                                     integers2))))
 (display-stream-n sine-series 10)
 
+(define (negate-stream s) (stream-map - s))
+(define cosine-series-2 (cons-stream 1 (negate-stream (integrate-series sine-series-2))))
+(define sine-series-2 (cons-stream 0 (integrate-series cosine-series-2)))
+(display-stream-n cosine-series-2 10)
+(display-stream-n sine-series-2 10)
+
 ;; --------------------------------------------------------------------------------
