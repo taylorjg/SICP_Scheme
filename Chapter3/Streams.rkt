@@ -185,20 +185,20 @@
 
 (define cosine-series
   (cons-stream 1 (integrate-series (stream-map
-                                    (lambda (c n)
-                                      (cond ((= (remainder n 2) 1) 0)
-                                            ((= (remainder n 4) 0) c)
-                                            (else (- c))))
+                                    (lambda (coeff n)
+                                      (cond ((odd? n) 0)
+                                            ((divisible? n 4) coeff)
+                                            (else (- coeff))))
                                     exp-series
                                     integers2))))
 (display-stream-n cosine-series 10)
 
 (define sine-series
   (cons-stream 0 (integrate-series (stream-map
-                                    (lambda (c n)
-                                      (cond ((= (remainder n 2) 0) 0)
-                                            ((= (remainder (+ n 1) 4) 0) (- c))
-                                            (else c)))
+                                    (lambda (coeff n)
+                                      (cond ((even? n) 0)
+                                            ((divisible? (+ n 1) 4) (- coeff))
+                                            (else coeff)))
                                     exp-series
                                     integers2))))
 (display-stream-n sine-series 10)
