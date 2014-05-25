@@ -54,6 +54,21 @@
   (display x)
   (display " "))
 
+(define (show x)
+  (display-element x)
+  x)
+
+(define (show-named-stream name stream)
+  (define (display-element-with-name element)
+    (display "<")
+    (display name)
+    (display ": ")
+    (display element)
+    (display "> ")
+    (newline)
+    element)
+  (stream-map display-element-with-name stream))
+
 ;; --------------------------------------------------------------------------------
 
 ;; Exercise 3.50
@@ -113,7 +128,8 @@
 (display-stream-n ones 10)
 
 (define (add-streams s1 s2) (stream-map + s1 s2))
-(define integers2 (cons-stream 1 (add-streams ones integers)))
+;(define integers2 (cons-stream 1 (add-streams ones integers2)))
+(define integers2 (cons-stream 1 (show-named-stream "add" (add-streams (show-named-stream "ones" ones) (show-named-stream "integers2" integers2)))))
 (display-stream-n integers2 10)
 
 (define fibs2 (cons-stream 0 (cons-stream 1 (add-streams (stream-cdr fibs) fibs))))
@@ -134,5 +150,9 @@
           (else (iter (stream-cdr ps)))))
   (iter primes2))
 (display-stream-n primes2 20)
+
+;; --------------------------------------------------------------------------------
+
+;; Exercise 3.5x
 
 ;; --------------------------------------------------------------------------------
