@@ -160,3 +160,15 @@
 (display-stream-n factorials 10)
          
 ;; --------------------------------------------------------------------------------
+
+;; Exercise 3.55
+
+;; 1  | 2  3  4  5  
+;;    | 1  3  6  10
+;; ----------------
+;; 1    3  6  10 15
+
+(define (partial-sums s) (cons-stream (stream-car s) (add-streams (stream-cdr s) (partial-sums s))))
+(display-stream-n (partial-sums integers2) 10)
+
+;; --------------------------------------------------------------------------------
