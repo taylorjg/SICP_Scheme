@@ -172,3 +172,16 @@
 (display-stream-n (partial-sums integers2) 10)
 
 ;; --------------------------------------------------------------------------------
+
+;; Exercise 3.59a
+
+(define (integrate-series coefficients) (stream-map / coefficients integers2))
+(display-stream-n (integrate-series ones) 10)
+
+;; Exercise 3.59b cosine-series
+
+;;(define exp-series (cons-stream 1 (integrate-series exp-series)))
+
+;; Exercise 3.59b sine-series
+
+;; --------------------------------------------------------------------------------
