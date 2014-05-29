@@ -210,3 +210,46 @@
 (display-stream-n sine-series-2 10)
 
 ;; --------------------------------------------------------------------------------
+
+(define (mul-series s1 s2)
+  (cons-stream
+   (* (stream-car s1) (stream-car s2))
+   (add-streams
+    (scale-stream (stream-cdr s2) (stream-car s1))
+    (mul-series (stream-cdr s1) s2))))
+
+(display-stream-n (mul-series ones ones) 10)
+
+(display-stream-n (add-streams
+                   (mul-series cosine-series-2 cosine-series-2)
+                   (mul-series sine-series-2 sine-series-2)) 10)
+
+;; --------------------------------------------------------------------------------
+
+;; Exercise 3.61
+
+(define (invert-unit-series s)
+  (cons-stream
+   1
+   (negate-stream (mul-series
+                   (stream-cdr s)
+                   (invert-unit-series s)))))
+
+(display-stream-n (invert-unit-series ones) 10)
+(display-stream-n (invert-unit-series exp-series) 10)
+
+;; --------------------------------------------------------------------------------
+
+;; Exercise 3.62
+
+(define (div-series s1 s2)
+  (begin
+    (if (= (stream-car s2) 0) (error "DIV-SERIES -- denominator constant term cannot be 0" (stream-car s2)))
+    (mul-series s1 (invert-unit-series (scale-stream s2 (/ 1 (stream-car s2)))))))
+
+(display-stream-n (div-series ones ones) 10)
+
+(define tangent-series (div-series sine-series cosine-series))
+(display-stream-n tangent-series 10)
+
+;; --------------------------------------------------------------------------------
